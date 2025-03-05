@@ -27,3 +27,4 @@ DerivedData
 .build/
 *.xcuserstate
 *.dSYM.zip
+icons/

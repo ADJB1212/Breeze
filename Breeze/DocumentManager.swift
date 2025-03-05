@@ -14,25 +14,25 @@ class DocumentManager: ObservableObject {
     @Published var replaceText = ""
     @Published var showFindReplace = false
     @Published var isMarkdownRendered = false
-
+    
     // Track modification status
     @Published var isDocumentModified = false
-
+    
     // Auto-save timer
     private var autoSaveTimer: Timer?
     private var lastSaveTime = Date()
-
+    
     init() {
         setupAutoSave()
     }
-
+    
     private func setupAutoSave() {
         autoSaveTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) {
             [weak self] _ in
             self?.autoSaveDocument()
         }
     }
-
+    
     func autoSaveDocument() {
         // Implement auto-save logic
         if isDocumentModified {
@@ -41,26 +41,26 @@ class DocumentManager: ObservableObject {
             lastSaveTime = Date()
         }
     }
-
+    
     func findNext() -> NSRange? {
         guard !findText.isEmpty else { return nil }
-
+        
         let text = currentDocument.text as NSString
         let range = text.range(
             of: findText, options: .caseInsensitive,
             range: NSRange(location: 0, length: text.length))
-
+        
         return range.location != NSNotFound ? range : nil
     }
-
+    
     func replaceAll() {
         guard !findText.isEmpty else { return }
-
+        
         currentDocument.text = currentDocument.text.replacingOccurrences(
             of: findText, with: replaceText)
         isDocumentModified = true
     }
-
+    
     func toggleMarkdownRendering() {
         isMarkdownRendered.toggle()
     }

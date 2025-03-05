@@ -9,19 +9,19 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var settingsManager: SettingsManager
-
+    
     var body: some View {
         TabView {
             appearanceSettings
                 .tabItem {
                     Label("Appearance", systemImage: "paintbrush")
                 }
-
+            
             editorSettings
                 .tabItem {
                     Label("Editor", systemImage: "doc.text")
                 }
-
+            
             exportSettings
                 .tabItem {
                     Label("Export", systemImage: "square.and.arrow.up")
@@ -30,7 +30,7 @@ struct SettingsView: View {
         .padding(20)
         .frame(width: 450, height: 300)
     }
-
+    
     private var appearanceSettings: some View {
         Form {
             Picker("Theme", selection: $settingsManager.selectedColorSchemePreference) {
@@ -38,26 +38,26 @@ struct SettingsView: View {
                     Text(theme.title).tag(theme)
                 }
             }
-
+            
             Picker("Font", selection: $settingsManager.fontName) {
                 ForEach(settingsManager.availableFonts, id: \.self) { font in
                     Text(font).tag(font)
                 }
             }
-
+            
             VStack(alignment: .leading) {
                 Text("Font Size: \(Int(settingsManager.fontSize))")
                 Slider(value: $settingsManager.fontSize, in: 8...36, step: 1)
             }
         }
     }
-
+    
     private var editorSettings: some View {
         Form {
             Toggle("Enable Spell Check", isOn: $settingsManager.enableSpellCheck)
-
+            
             Toggle("Enable Auto-Save", isOn: $settingsManager.enableAutoSave)
-
+            
             if settingsManager.enableAutoSave {
                 VStack(alignment: .leading) {
                     Text("Auto-Save Interval: \(Int(settingsManager.autoSaveInterval)) seconds")
@@ -66,7 +66,7 @@ struct SettingsView: View {
             }
         }
     }
-
+    
     private var exportSettings: some View {
         Form {
             Picker("Default Export Format", selection: $settingsManager.defaultExportFormat) {

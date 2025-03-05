@@ -17,7 +17,7 @@ class ExportManager {
         panel.isExtensionHidden = false
         panel.allowsOtherFileTypes = true
         panel.title = "Export Document"
-
+        
         switch format.lowercased() {
         case "markdown", "md":
             panel.allowedContentTypes = [.plainText]
@@ -38,12 +38,12 @@ class ExportManager {
             panel.allowedContentTypes = [.plainText]
             panel.nameFieldStringValue = "document.txt"
         }
-
+        
         panel.begin { response in
             if response == .OK, let url = panel.url {
                 do {
                     var data: Data
-
+                    
                     switch format.lowercased() {
                     case "html":
                         data = self.convertToHTML(document.text).data(using: .utf8)!
@@ -54,7 +54,7 @@ class ExportManager {
                     default:
                         data = document.text.data(using: .utf8)!
                     }
-
+                    
                     try data.write(to: url)
                 } catch {
                     print("Error exporting document: \(error.localizedDescription)")
@@ -62,12 +62,12 @@ class ExportManager {
             }
         }
     }
-
+    
     private func convertToHTML(_ markdown: String) -> String {
         // Simple markdown to HTML conversion
         var html =
-            "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }</style></head><body>"
-
+        "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }</style></head><body>"
+        
         // Basic conversion for demonstration
         let paragraphs = markdown.components(separatedBy: "\n\n")
         for paragraph in paragraphs {
@@ -84,11 +84,11 @@ class ExportManager {
                 html += "<p>\(paragraph)</p>"
             }
         }
-
+        
         html += "</body></html>"
         return html
     }
-
+    
     private func convertToPDF(_ text: String) -> Data {
         let attributedString = NSAttributedString(string: text)
         let printInfo = NSPrintInfo.shared
@@ -97,17 +97,17 @@ class ExportManager {
         printInfo.rightMargin = 72
         printInfo.topMargin = 72
         printInfo.bottomMargin = 72
-
+        
         let dataObject = NSMutableData()
         let dataConsumer = CGDataConsumer(data: dataObject as CFMutableData)!
-
+        
         var mediaBox = CGRect(
             x: 0, y: 0, width: printInfo.paperSize.width, height: printInfo.paperSize.height)
-
+        
         let context = CGContext(consumer: dataConsumer, mediaBox: &mediaBox, nil)!
-
+        
         context.beginPage(mediaBox: &mediaBox)
-
+        
         let framesetter = CTFramesetterCreateWithAttributedString(attributedString)
         let path = CGPath(
             rect: CGRect(
@@ -115,16 +115,16 @@ class ExportManager {
                 width: printInfo.paperSize.width - printInfo.leftMargin - printInfo.rightMargin,
                 height: printInfo.paperSize.height - printInfo.topMargin - printInfo.bottomMargin),
             transform: nil)
-
+        
         let frame = CTFramesetterCreateFrame(
             framesetter, CFRangeMake(0, attributedString.length), path, nil)
         CTFrameDraw(frame, context)
-
+        
         context.endPage()
-
+        
         return dataObject as Data
     }
-
+    
     private func convertToRTF(_ text: String) -> Data {
         let attributedString = NSAttributedString(string: text)
         return try! attributedString.data(

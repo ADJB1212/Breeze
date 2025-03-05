@@ -11,9 +11,9 @@ import SwiftUI
 class SettingsManager: ObservableObject {
     enum ColorSchemePreference: String, CaseIterable, Identifiable {
         case system, light, dark
-
+        
         var id: String { self.rawValue }
-
+        
         var title: String {
             switch self {
             case .system: return "System"
@@ -21,7 +21,7 @@ class SettingsManager: ObservableObject {
             case .dark: return "Dark"
             }
         }
-
+        
         var colorScheme: ColorScheme? {
             switch self {
             case .system: return nil
@@ -30,7 +30,7 @@ class SettingsManager: ObservableObject {
             }
         }
     }
-
+    
     @AppStorage("colorSchemePreference") var colorSchemePreference: String = ColorSchemePreference
         .system.rawValue
     @AppStorage("fontSize") var fontSize: Double = 14.0
@@ -39,7 +39,7 @@ class SettingsManager: ObservableObject {
     @AppStorage("enableAutoSave") var enableAutoSave: Bool = true
     @AppStorage("autoSaveInterval") var autoSaveInterval: Double = 30.0
     @AppStorage("defaultExportFormat") var defaultExportFormat: String = "markdown"
-
+    
     var selectedColorSchemePreference: ColorSchemePreference {
         get {
             return ColorSchemePreference(rawValue: colorSchemePreference) ?? .system
@@ -48,11 +48,11 @@ class SettingsManager: ObservableObject {
             colorSchemePreference = newValue.rawValue
         }
     }
-
+    
     var availableFonts: [String] {
         return ["SF Pro", "Helvetica", "Menlo", "Times New Roman", "Arial", "Courier"]
     }
-
+    
     var exportFormats: [String] {
         return ["markdown", "txt", "rtf", "html", "pdf"]
     }

@@ -11,7 +11,7 @@ import SwiftUI
 struct BreezeApp: App {
     @StateObject private var documentManager = DocumentManager()
     @StateObject private var settingsManager = SettingsManager()
-
+    
     var body: some Scene {
         DocumentGroup(newDocument: TextDocument()) { file in
             EditorView(document: file.document)
@@ -24,19 +24,19 @@ struct BreezeApp: App {
                     documentManager.showFindReplace = true
                 }
                 .keyboardShortcut("f", modifiers: [.command])
-
+                
                 Divider()
-
+                
                 Button(
                     documentManager.isMarkdownRendered
-                        ? "Hide Markdown Preview" : "Show Markdown Preview"
+                    ? "Hide Markdown Preview" : "Show Markdown Preview"
                 ) {
                     documentManager.toggleMarkdownRendering()
                 }
                 .keyboardShortcut("p", modifiers: [.command])
             }
         }
-
+        
         Settings {
             SettingsView()
                 .environmentObject(settingsManager)
