@@ -14,6 +14,7 @@ Breeze is a modern, minimalist text editor for macOS that combines simplicity wi
 - **Native macOS Experience** - Built with SwiftUI for optimal performance and integration
 - **Find and Replace** - Powerful text search and manipulation tools
 - **Customizable Appearance** - Choose your preferred theme, font, and text size
+- **Locally Run Text to Speech** - Hear what you have written without sending it off to an external source for processing
 
 ## 🔧 Installation
 
